@@ -36,9 +36,7 @@ public class ApiClient {
     @Step
     public void searchPageBy(String url, int pageNumber) {
         Serenity.setSessionVariable("expectedPage").to(pageNumber);
-        //Agrega lo necesario para ver en el log de la Petición
-        //Agregar la consulta de QueryParams
-        SerenityRest.useRelaxedHTTPSValidation();
+           SerenityRest.useRelaxedHTTPSValidation();
         response = SerenityRest
                 .given().contentType(contentType)
                 //.queryParam("page", pageNumber)
@@ -55,7 +53,7 @@ public class ApiClient {
 
     @Step
     public void validatePageValue() {
-        //Indicar el jsonPath necesario para obtener el valor de la respuesta
+
         int currentPage = response.getBody().jsonPath().getInt("<Json Path>");
 
         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Número de página >>> {0}", currentPage);
@@ -78,10 +76,10 @@ public class ApiClient {
                 .body("{\"name\": \"" + name + "\", \"job\": \"" + job + "\"}")
                 .post(url + "/api/users");
 
-        // Obtenemos el ID del usuario creado desde la respuesta
+
         createdUserId = response.jsonPath().getString("id");
 
-        // Verificamos que el ID no sea null o vacío
+
         if (createdUserId == null || createdUserId.isEmpty()) {
             throw new RuntimeException("No se pudo obtener el ID del usuario creado.");
         }
@@ -89,13 +87,13 @@ public class ApiClient {
 
     @Step
     public void saveIdUser() {
-        // Obtener el ID del usuario de la respuesta utilizando el jsonPath "id"
+
         String id = response.getBody().jsonPath().getString("id");
 
-        // Imprimir el ID para verificar que se está extrayendo correctamente
+
         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Id del nuevo usuario >>> {0}", id);
 
-        // Guardar el ID en la sesión de Serenity para su uso posterior
+
         Serenity.setSessionVariable("newUserId").to(id);
     }
 
@@ -106,17 +104,17 @@ public class ApiClient {
 
         String id = Serenity.sessionVariableCalled("newUserId"); // Obtener el ID del nuevo usuario creado
 
-        // Guardamos los nuevos valores esperados
+
         Serenity.setSessionVariable("expectedNewName").to(newName);
         Serenity.setSessionVariable("expectedNewJob").to(newJob);
 
-        // Construimos el cuerpo de la solicitud
+
         String req = "{\n" +
                 "    \"name\": \"" + newName + "\",\n" +
                 "    \"job\": \"" + newJob + "\"\n" +
                 "}";
 
-        // Realizamos la solicitud PUT para actualizar el usuario con el ID
+
         response = SerenityRest
                 .given().contentType(contentType)
                 .body(req) // Usamos el cuerpo de la solicitud con los datos nuevos
@@ -129,20 +127,19 @@ public class ApiClient {
         String expectedNewName = Serenity.sessionVariableCalled("expectedNewName");
         String expectedNewJob = Serenity.sessionVariableCalled("expectedNewJob");
 
-        // Recuperar los valores actualizados de la respuesta
+
         String newName = response.getBody().jsonPath().getString("name");
         String newJob = response.getBody().jsonPath().getString("job");
 
-        // Agregar log para verificar la respuesta
+
         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Nuevo nombre del usuario >>> {0}", newName);
         Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Nuevo trabajo del usuario >>> {0}", newJob);
 
-        // Verificar si los valores son nulos
+
         if (newName == null || newJob == null) {
             Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "La respuesta contiene valores nulos para el nombre o el trabajo.");
         }
 
-        // Validar que los datos coincidan con lo esperado
         Assertions.assertEquals(expectedNewName, newName, "El nombre actualizado no coincide.");
         Assertions.assertEquals(expectedNewJob, newJob, "El trabajo actualizado no coincide.");
     }

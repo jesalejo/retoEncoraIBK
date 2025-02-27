@@ -1,5 +1,5 @@
 #language: es
-@web1
+@web
 Característica: Demo Form (#2)
   SauceDemo es un formulario WEB UI ejemplo para fines de entrenamiento
   Por favor ver (https://www.saucedemo.com/)
@@ -17,7 +17,7 @@ Característica: Demo Form (#2)
   4) (+) Puedes hacer uso de DataTable para enviar las credenciales
   5) (+) Genera el reporte HTML a partir de Cucumber o Serenity BDD
 
-  @caso1
+  @caso1 @sauceDemo
   Esquema del escenario: validar los mensajes de error de login fallido
     Dado que el usuario visita la pagina de inicio de SauceDemo
     Cuando ingresa las credenciales "<user>" y "<pass>" para iniciar sesión

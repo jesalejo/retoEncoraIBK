@@ -48,20 +48,15 @@ public class RestApiDefinition {
     @Cuando("creo un nuevo usuario")
     public void creoUnNuevoUsuario(DataTable newUser) {
            List<Map<String, String>> rows = newUser.asMaps(String.class, String.class);
-        // validacion de que la tabla tiene los datos esperados
+
         if (!rows.isEmpty()) {
-            // Extraemos 'name' y 'job' de la primera fila
             String name = rows.get(0).get("name");
             String job = rows.get(0).get("job");
-
-            // Verificamos que 'name' y 'job' no sean nulos o vacíos
             assertThat(name).isNotNull();
             assertThat(job).isNotNull();
-
             // Llamamos al metodo que crea un nuevo usuario
             apiClient.createNewUser(URL, name, job);
         } else {
-            // Si la tabla no tiene filas, lanzamos un error
             throw new IllegalArgumentException("No se encontraron datos en la tabla DataTable");
         }
     }
@@ -74,20 +69,16 @@ public class RestApiDefinition {
     @Cuando("actualizo el usuario creado con los nuevos datos")
     public void actualizoElUsuarioCreadoConLosNuevosDatos(DataTable updateUser) {
            List<Map<String, String>> rows = updateUser.asMaps(String.class, String.class);
-        // validacion de que la tabla contiene datos
-        if (!rows.isEmpty()) {
-            // Extraemos 'newName' y 'newjob' de la primera fila de la tabla
+         if (!rows.isEmpty()) {
             String newName = rows.get(0).get("newName");
             String newJob = rows.get(0).get("newJob");
 
-            // Verificamos que 'newName' y 'newJob' no sean nulos ni vacíos
             assertThat(newName).isNotNull().isNotEmpty();
             assertThat(newJob).isNotNull().isNotEmpty();
 
-            // Llamamos al metodo de la API para actualizar el usuario
             apiClient.updateUserInfo(URL, newName, newJob);
         } else {
-            // Si la tabla está vacía, lanzamos un error claro
+
             throw new IllegalArgumentException("No se encontraron datos en la tabla DataTable");
         }
     }

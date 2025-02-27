@@ -3,6 +3,7 @@ package pe.com.bcp.techcases.testautomation.ui.actors;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.pages.PageObject;
 import net.thucydides.core.steps.ScenarioSteps;
+import pe.com.bcp.techcases.testautomation.ui.pages.orange.OrangeLoginPage;
 
 public class OrangeUser extends ScenarioSteps {
 
